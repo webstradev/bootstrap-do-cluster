@@ -18,12 +18,6 @@ resource "digitalocean_droplet" "k3s_node" {
       agent       = true
     }
   }
-
-  # Local-exec provisioner to copy the kubeconfig file to the local machine
-  provisioner "local-exec" {
-    command = "scp -o StrictHostKeyChecking=no root@${self.ipv4_address}:/etc/rancher/k3s/k3s.yaml kubeconfig.secret.yaml"
-  }
-
 }
 
 output "k3s_node_ip" {
