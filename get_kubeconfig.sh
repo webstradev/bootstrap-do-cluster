@@ -3,9 +3,25 @@
 
 REMOTE_IP=$(terraform output -raw k3s_server_node_ip)
 KUBECONFIG_PATH=kubeconfig.secret.yaml
+MAX_ATTEMPTS=20
+SLEEP_SECONDS=5
 
-# Copy kubeconfig from remote server
-scp -o StrictHostKeyChecking=no root@"$REMOTE_IP":/etc/rancher/k3s/k3s.yaml $KUBECONFIG_PATH 
+# Attempt to retrieve the file
+attempt=0
+while [ $attempt -lt $MAX_ATTEMPTS ]; do
+  ((attempt++))
+  echo "Attempt $attempt of $MAX_ATTEMPTS"
+  scp -o StrictHostKeyChecking=no root@"$REMOTE_IP":/etc/rancher/k3s/k3s.yaml "$KUBECONFIG_PATH" && break
+  echo "Attempt $attempt failed, retrying in $SLEEP_SECONDS seconds..."
+  sleep $SLEEP_SECONDS
+done
+
+# Check if successful
+if [ $attempt -eq $MAX_ATTEMPTS ]; then
+  echo "Failed to retrieve file after $MAX_ATTEMPTS attempts."
+else
+  echo "File successfully retrieved."
+fi
 
 # Replace localhost with remote IP
 yq eval ".clusters[].cluster.server = \"https://${REMOTE_IP}:6443\"" -i $KUBECONFIG_PATH 
