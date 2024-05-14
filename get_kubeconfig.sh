@@ -20,3 +20,4 @@ yq eval ".contexts[].name = \"k3s_dev_cluster\"" -i $KUBECONFIG_PATH
 # Replace current context with k3s_dev_cluster
 yq eval ".current-context = \"k3s_dev_cluster\"" -i $KUBECONFIG_PATH
 
+kubectl konfig import -s $KUBECONFIG_PATH
