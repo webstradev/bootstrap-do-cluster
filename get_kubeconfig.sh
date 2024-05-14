@@ -1,7 +1,7 @@
 #!/bin/bash
 # Usage: ./get_kubeconfig.sh <remote_ip>
 
-REMOTE_IP=$1
+REMOTE_IP=$(terraform output -raw k3s_server_node_ip)
 KUBECONFIG_PATH=kubeconfig.secret.yaml
 
 # Copy kubeconfig from remote server
