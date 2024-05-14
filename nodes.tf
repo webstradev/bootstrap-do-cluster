@@ -2,6 +2,7 @@ resource "digitalocean_droplet" "k3s_server_node" {
   image  = "ubuntu-24-04-x64"
   name   = "k3s-server-node"
   region = var.region
+  vpc_uuid = digitalocean_vpc.webstradev_vpc.id
   size   = "s-1vcpu-1gb"
   ssh_keys = [
     var.ssh_fingerprint
@@ -21,6 +22,7 @@ resource "digitalocean_droplet" "k3s_agent_node" {
   image  = "ubuntu-24-04-x64"
   name   = "k3s-agent-node-${count.index}"
   region = var.region
+  vpc_uuid = digitalocean_vpc.webstradev_vpc.id 
   size   = var.node_size
   ssh_keys = [
     var.ssh_fingerprint
