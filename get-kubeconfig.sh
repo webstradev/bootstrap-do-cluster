@@ -3,8 +3,8 @@
 
 REMOTE_IP=$(terraform output -raw k3s_server_node_ip)
 KUBECONFIG_PATH=kubeconfig.secret.yaml
-MAX_ATTEMPTS=20
-SLEEP_SECONDS=5
+MAX_ATTEMPTS=10
+SLEEP_SECONDS=10
 
 # Attempt to retrieve the file
 attempt=0
