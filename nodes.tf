@@ -8,7 +8,7 @@ resource "digitalocean_droplet" "k3s_server_node" {
     var.ssh_fingerprint
   ]
 
-  tags = ["k3s-node", "k3s-server"]
+  tags = [digitalocean_tag.node.name, digitalocean_tag.server.name]
 
   user_data = templatefile("${path.module}/install-k3s.sh", {
     server_ip = "",
@@ -34,7 +34,7 @@ resource "digitalocean_droplet" "k3s_agent_node" {
     var.ssh_fingerprint
   ]
 
-  tags = ["k3s-node", "k3s-agent"]
+  tags = [digitalocean_tag.node.name, digitalocean_tag.agent.name]
 
   user_data = templatefile("${path.module}/install-k3s.sh", {
     server_ip = digitalocean_droplet.k3s_server_node.ipv4_address,
