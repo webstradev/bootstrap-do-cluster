@@ -1,7 +1,7 @@
 resource "digitalocean_loadbalancer" "k3s_lb" {
   name     = "k3s-api-loadbalancer"
   region   = var.region
-  vpc_uuid = digitalocean_vpc.k3s_vpc.id
+  vpc_uuid = digitalocean_vpc.webstradev_vpc.id
 
   forwarding_rule {
     tls_passthrough = true
