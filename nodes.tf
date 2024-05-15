@@ -10,8 +10,8 @@ resource "digitalocean_droplet" "k3s_server_node" {
 
   tags = [digitalocean_tag.node.name, digitalocean_tag.server.name]
 
-  user_data = templatefile("${path.module}/install-k3s.sh", {
-    server_ip = "",
+  user_data = templatefile("${path.module}/install-k3s-server.sh", {
+    k3s_lb_ip = "",
     k3s_token = random_password.k3s_token.result
   })
 }
@@ -36,8 +36,8 @@ resource "digitalocean_droplet" "k3s_agent_node" {
 
   tags = [digitalocean_tag.node.name, digitalocean_tag.agent.name]
 
-  user_data = templatefile("${path.module}/install-k3s.sh", {
-    server_ip = digitalocean_loadbalancer.k3s_lb.ip, 
+  user_data = templatefile("${path.module}/install-k3s-agent.sh", {
+    k3s_lb_ip = digitalocean_loadbalancer.k3s_lb.ip, 
     k3s_token = random_password.k3s_token.result
   })
 
