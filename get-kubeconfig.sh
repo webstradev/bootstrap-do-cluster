@@ -1,7 +1,8 @@
 #!/bin/bash
-# Usage: ./get_kubeconfig.sh <remote_ip>
+# Usage: ./get_kubeconfig.sh 
 
-REMOTE_IP=$(terraform output -raw k3s_api_lb_ip)
+LB_IP=$(terraform output -raw k3s_api_lb_ip)
+SERVER_IP=$(terraform output -raw k3s_server_node_ip)
 KUBECONFIG_PATH=kubeconfig.secret.yaml
 MAX_ATTEMPTS=10
 SLEEP_SECONDS=10
@@ -11,7 +12,7 @@ attempt=0
 while [ $attempt -lt $MAX_ATTEMPTS ]; do
   ((attempt++))
   echo "Attempt $attempt of $MAX_ATTEMPTS"
-  scp -o StrictHostKeyChecking=no root@"$REMOTE_IP":/etc/rancher/k3s/k3s.yaml "$KUBECONFIG_PATH" && break
+  scp -o StrictHostKeyChecking=no root@"$SERVER_IP":/etc/rancher/k3s/k3s.yaml "$KUBECONFIG_PATH" && break
   echo "Attempt $attempt failed, retrying in $SLEEP_SECONDS seconds..."
   sleep $SLEEP_SECONDS
 done
@@ -24,7 +25,7 @@ else
 fi
 
 # Replace localhost with remote IP
-yq eval ".clusters[].cluster.server = \"https://${REMOTE_IP}:6443\"" -i $KUBECONFIG_PATH 
+yq eval ".clusters[].cluster.server = \"https://${LB_IP}:6443\"" -i $KUBECONFIG_PATH 
 # Replace cluster name with k3s_dev_cluster in clusters and contexts
 yq eval ".clusters[].name = \"k3s_dev_cluster\"" -i $KUBECONFIG_PATH
 yq eval ".contexts[].context.cluster = \"k3s_dev_cluster\"" -i $KUBECONFIG_PATH
