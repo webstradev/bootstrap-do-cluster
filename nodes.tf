@@ -14,7 +14,13 @@ resource "digitalocean_droplet" "k3s_server_node" {
     server_ip = "",
     k3s_token = random_password.k3s_token.result
   })
+}
 
+resource "digitalocean_project_resources" "k3s_server_nodes" {
+  project = digitalocean_project.k3s_cluster.id
+  resources = [
+    digitalocean_droplet.k3s_server_node.urn,
+  ]
 }
 
 resource "digitalocean_droplet" "k3s_agent_node" {
@@ -36,6 +42,14 @@ resource "digitalocean_droplet" "k3s_agent_node" {
   })
 
   depends_on = [digitalocean_droplet.k3s_server_node]
+}
+
+resource "digitalocean_project_resources" "k3s_agent_nodes" {
+  count   = var.node_count - 1
+  project = digitalocean_project.k3s_cluster.id
+  resources = [
+    digitalocean_droplet.k3s_agent_node[count.index].urn,
+  ]
 }
 
 output "k3s_server_node_ip" {
