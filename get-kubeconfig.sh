@@ -1,7 +1,6 @@
 #!/bin/bash
 # Usage: ./get_kubeconfig.sh 
 
-LB_IP=$(terraform output -raw k3s_api_lb_ip)
 SERVER_IP=$(terraform output -raw k3s_server_node_ip)
 KUBECONFIG_PATH=kubeconfig.secret.yaml
 MAX_ATTEMPTS=10
@@ -25,7 +24,7 @@ else
 fi
 
 # Replace localhost with remote IP
-yq eval ".clusters[].cluster.server = \"https://${LB_IP}:6443\"" -i $KUBECONFIG_PATH 
+yq eval ".clusters[].cluster.server = \"https://${SERVER_IP}:6443\"" -i $KUBECONFIG_PATH 
 # Replace cluster name with k3s_dev_cluster in clusters and contexts
 yq eval ".clusters[].name = \"k3s_dev_cluster\"" -i $KUBECONFIG_PATH
 yq eval ".contexts[].context.cluster = \"k3s_dev_cluster\"" -i $KUBECONFIG_PATH
