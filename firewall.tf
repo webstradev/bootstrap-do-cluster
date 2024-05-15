@@ -1,12 +1,3 @@
-resource "digitalocean_firewall" "ccm_firewall" {
-  name = "ccm-firewall"
-
-  outbound_rule {
-    protocol              = "icmp"
-    destination_addresses = ["0.0.0.0/0", "::/0"]
-  }
-}
-
 resource "digitalocean_firewall" "k3s_firewall" {
   name = "k3s-firewall"
 
