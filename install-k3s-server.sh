@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Install k3s server
-curl -sfL https://get.k3s.io | K3S_TOKEN=${k3s_token} sh -s - \
+curl -sfL https://get.k3s.io | K3S_TOKEN="${k3s_token}" sh -s - \
     --tls-san ${k3s_lb_ip}
 
 # Adjust the kubeconfig permissions for easy retrieval
