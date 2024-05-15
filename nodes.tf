@@ -61,3 +61,8 @@ output "k3s_agent_node_ips" {
   value       = digitalocean_droplet.k3s_agent_node.*.ipv4_address
   description = "The IP addresses of the k3s agent nodes"
 }
+
+output "k3s_api_lb_ip" {
+  value       = digitalocean_loadbalancer.k3s_lb.ip
+  description = "The IP address of the k3s API load balancer"
+}
