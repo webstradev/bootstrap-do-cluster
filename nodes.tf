@@ -14,6 +14,8 @@ resource "digitalocean_droplet" "k3s_server_node" {
     k3s_lb_ip = digitalocean_loadbalancer.k3s_lb.ip,
     k3s_token = random_password.k3s_token.result
   })
+
+  depends_on = [ digitalocean_loadbalancer.k3s_lb ]
 }
 
 resource "digitalocean_project_resources" "k3s_server_nodes" {

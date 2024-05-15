@@ -18,6 +18,8 @@ resource "digitalocean_loadbalancer" "k3s_lb" {
   }
 
   droplet_tag = digitalocean_tag.server.name
+
+  depends_on = [ digitalocean_firewall.k3s_firewall ]
 }
 
 resource "digitalocean_project_resources" "k3s_api_server_lb" {
