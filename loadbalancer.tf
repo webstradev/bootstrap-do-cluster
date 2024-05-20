@@ -33,6 +33,6 @@ resource "digitalocean_project_resources" "k3s_loadbalancers"{
 resource "digitalocean_record" "cluster_domain_a_record" {
   domain = digitalocean_domain.cluster_domain.name
   type   = "A"
-  name   = "@"
+  name   = "*"
   value  = digitalocean_loadbalancer.k3_lb.ip
 }
