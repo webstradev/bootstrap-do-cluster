@@ -8,11 +8,19 @@ resource "digitalocean_loadbalancer" "k3_lb" {
     entry_protocol = "http"
     entry_port     = 80
     target_protocol = "http"
-    target_port    = 80
+    target_port    = 30080
+  }
+
+  forwarding_rule {
+    entry_protocol = "https"
+    entry_port     = 443
+    target_protocol = "https"
+    target_port    = 30443
+    tls_passthrough = true
   }
 
   healthcheck {
-    port     = 80
+    port     = 30080
     protocol = "http"
     path     = "/"
     check_interval_seconds = 10
