@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Install k3s server
-curl -sfL https://get.k3s.io | sh -s -
+curl -sfL https://get.k3s.io | sh -s - --disable traefik
 
 # Adjust the kubeconfig permissions for easy retrieval
 chmod 644 /etc/rancher/k3s/k3s.yaml
