@@ -3,6 +3,7 @@ resource "digitalocean_loadbalancer" "k3_lb" {
   region     = "ams3"
   droplet_tag = digitalocean_tag.node.name 
   vpc_uuid = digitalocean_vpc.webstradev_vpc.id
+  enable_proxy_protocol = true
 
   forwarding_rule {
     entry_protocol = "http"
