@@ -9,3 +9,10 @@ resource "digitalocean_project_resources" "project_cluster_domain"{
     digitalocean_domain.cluster_domain.urn 
   ]
 }
+
+resource "digitalocean_record" "cluster_domain_a_record" {
+  domain = digitalocean_domain.cluster_domain.name
+  type   = "A"
+  name   = "*"
+  value  = digitalocean_droplet.k3s_server_node.ipv4_address
+}
