@@ -20,7 +20,3 @@ variable "node_size" {
   description = "The size of the k3s nodes"
   default = "s-1vcpu-1gb"
 }
-
-variable "domain_name" {
-  description = "The domain name to use for the k3s cluster"
-}
