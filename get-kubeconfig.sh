@@ -37,3 +37,4 @@ yq eval ".contexts[].name = \"k3s_dev_cluster\"" -i $KUBECONFIG_PATH
 yq eval ".current-context = \"k3s_dev_cluster\"" -i $KUBECONFIG_PATH
 
 kubectl konfig import -s $KUBECONFIG_PATH
+rm *.secret.yaml
